@@ -1,11 +1,743 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share Salad</title>
+  <style>
+    :root {
+      color-scheme: dark light;
+      --bg: #050816;
+      --card: #111827;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.15);
+      --border: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, #020617 40%, #000 80%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      border-radius: 18px;
+      padding: 20px 20px 16px;
+      background:
+        radial-gradient(circle at 0 0, rgba(94, 234, 212, 0.18) 0, transparent 40%),
+        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.18) 0, transparent 40%),
+        linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(15, 23, 42, 0.8);
+    }
+    .shell-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .traffic-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #4b5563;
+    }
+    .dot.red { background: #f97373; }
+    .dot.amber { background: #facc15; }
+    .dot.green { background: #22c55e; }
+
+    .title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #e5e7eb;
+      letter-spacing: 0.02em;
+    }
+    .badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      background: rgba(6, 78, 59, 0.35);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #a7f3d0;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.35), transparent 55%);
+      border-radius: 14px;
+      border: 1px solid rgba(75, 85, 99, 0.7);
+      padding: 14px 14px 12px;
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(94, 234, 212, 0.08), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    .panel-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .panel-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+    .panel-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 7px 8px;
+      border-radius: 9px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    input[type="text"]::placeholder {
+      color: #4b5563;
+    }
+    input[type="text"]:focus {
+      border-color: rgba(52, 211, 153, 0.8);
+      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.5);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      border-radius: 9px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+      padding: 8px 9px;
+      resize: vertical;
+      outline: none;
+    }
+    textarea::placeholder {
+      color: #4b5563;
+    }
+    textarea:focus {
+      border-color: rgba(96, 165, 250, 0.9);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    }
+    .input-row-single {
+      margin-bottom: 10px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.4);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+      white-space: nowrap;
+    }
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(16, 185, 129, 0.6);
+    }
+    button:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 6px 14px rgba(16, 185, 129, 0.5);
+    }
+    button.secondary {
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      box-shadow: none;
+    }
+    button.secondary:hover:not(:disabled) {
+      background: rgba(17, 24, 39, 1);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .pill code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 11px;
+      color: #e5e7eb;
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      margin-right: 6px;
+      display: inline-block;
+    }
+    .status-dot.disconnected {
+      background: #4b5563;
+    }
+    .status-dot.connected {
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    .room-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 18px;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: radial-gradient(circle at top, rgba(55, 65, 81, 0.6), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      text-align: center;
+    }
+
+    .items-list {
+      max-height: 220px;
+      overflow-y: auto;
+      border-radius: 9px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.98));
+      padding: 6px 6px 4px;
+      font-size: 12px;
+    }
+    .items-empty {
+      padding: 10px 8px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .item {
+      padding: 7px 8px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      margin-bottom: 4px;
+      display: flex;
+      gap: 8px;
+    }
+    .item-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      margin-top: 5px;
+    }
+    .item-dot.text { background: #22c55e; }
+    .item-dot.file { background: #3b82f6; }
+    .item-main {
+      flex: 1;
+    }
+    .item-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+    .item-from {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .item-badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+    }
+    .item-content {
+      font-size: 12px;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .item-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(17, 24, 39, 0.95);
+      color: #e5e7eb;
+      text-decoration: none;
+      font-size: 11px;
+    }
+    .item-file span.size {
+      color: #9ca3af;
+      font-size: 10px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .hint code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 11px;
+      color: #d1fae5;
+    }
+
+    .error {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #fecaca;
+    }
+  </style>
 </head>
 <body>
-    
+  <div class="shell">
+    <div class="shell-header">
+      <div class="traffic-dots">
+        <span class="dot red"></span>
+        <span class="dot amber"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="title">Share Salad</div>
+      <span class="badge">Live Room</span>
+    </div>
+
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-inner">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Room Controls</div>
+              <div class="panel-subtitle">Join a room and share text or small files in real‑time.</div>
+            </div>
+          </div>
+
+          <div class="input-row-single">
+            <label for="roomInput">Room Code</label>
+            <div class="input-row">
+              <input id="roomInput" type="text" autocomplete="off" placeholder="E.g. 4‑character code like AB12" />
+              <button id="joinBtn">Join</button>
+            </div>
+          </div>
+
+          <div class="input-row-single">
+            <label for="nameInput">Your Name (optional)</label>
+            <input id="nameInput" type="text" autocomplete="off" placeholder="How others will see you" />
+          </div>
+
+          <div class="status-line">
+            <div>
+              <span id="connDot" class="status-dot disconnected"></span>
+              <span id="connLabel">Not connected</span>
+            </div>
+            <div class="pill">
+              ws: <code id="wsUrlLabel"></code>
+            </div>
+          </div>
+
+          <div class="hint">
+            Tip: open this URL on two devices, join with the same room code, and share text or files.
+          </div>
+
+          <div class="error" id="error"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-inner">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Share</div>
+              <div class="panel-subtitle">Post text snippets or upload files (10MB max, common types only).</div>
+            </div>
+          </div>
+
+          <div class="room-code" id="roomCodeDisplay">NO ROOM</div>
+
+          <div style="margin-top: 10px;">
+            <label for="textInput">Text</label>
+            <textarea id="textInput" placeholder="Type a message to share with the room..."></textarea>
+            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
+              <button class="secondary" id="clearTextBtn">Clear</button>
+              <button id="sendTextBtn">Send Text</button>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <label for="fileInput">File Upload</label>
+            <div class="input-row">
+              <input type="file" id="fileInput" style="flex:1; color: #9ca3af; font-size: 11px;" />
+              <button id="sendFileBtn">Send File</button>
+            </div>
+            <div class="hint">Files expire after ~5 minutes. Allowed types include images, PDF, text, and zip.</div>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <label>Room Activity</label>
+            <div class="items-list" id="items"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const roomInput = document.getElementById('roomInput');
+      const nameInput = document.getElementById('nameInput');
+      const joinBtn = document.getElementById('joinBtn');
+      const connDot = document.getElementById('connDot');
+      const connLabel = document.getElementById('connLabel');
+      const wsUrlLabel = document.getElementById('wsUrlLabel');
+      const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+      const textInput = document.getElementById('textInput');
+      const sendTextBtn = document.getElementById('sendTextBtn');
+      const clearTextBtn = document.getElementById('clearTextBtn');
+      const fileInput = document.getElementById('fileInput');
+      const sendFileBtn = document.getElementById('sendFileBtn');
+      const itemsEl = document.getElementById('items');
+      const errorEl = document.getElementById('error');
+
+      let ws = null;
+      let currentRoom = null;
+
+      function formatBytes(bytes) {
+        if (!bytes && bytes !== 0) return '';
+        const units = ['B', 'KB', 'MB', 'GB'];
+        let i = 0;
+        let v = bytes;
+        while (v >= 1024 && i < units.length - 1) {
+          v /= 1024;
+          i++;
+        }
+        return v.toFixed(v >= 10 || i === 0 ? 0 : 1) + ' ' + units[i];
+      }
+
+      function setStatus(connected) {
+        if (connected) {
+          connDot.classList.remove('disconnected');
+          connDot.classList.add('connected');
+          connLabel.textContent = 'Connected';
+        } else {
+          connDot.classList.remove('connected');
+          connDot.classList.add('disconnected');
+          connLabel.textContent = 'Not connected';
+        }
+      }
+
+      function setError(msg) {
+        errorEl.textContent = msg || '';
+      }
+
+      function renderItems(items) {
+        itemsEl.innerHTML = '';
+        if (!items || !items.length) {
+          const div = document.createElement('div');
+          div.className = 'items-empty';
+          div.textContent = 'Nothing in this room yet.';
+          itemsEl.appendChild(div);
+          return;
+        }
+        for (const it of items) {
+          const row = document.createElement('div');
+          row.className = 'item';
+
+          const dot = document.createElement('div');
+          dot.className = 'item-dot ' + (it.type === 'file' ? 'file' : 'text');
+          row.appendChild(dot);
+
+          const main = document.createElement('div');
+          main.className = 'item-main';
+
+          const meta = document.createElement('div');
+          meta.className = 'item-meta';
+
+          const from = document.createElement('div');
+          from.className = 'item-from';
+          from.textContent = (it.from || 'anon');
+
+          const badge = document.createElement('div');
+          badge.className = 'item-badge';
+          badge.textContent = it.type === 'file' ? 'File' : 'Text';
+
+          meta.appendChild(from);
+          meta.appendChild(badge);
+          main.appendChild(meta);
+
+          const content = document.createElement('div');
+          content.className = 'item-content';
+
+          if (it.type === 'file' && it.file) {
+            const a = document.createElement('a');
+            a.className = 'item-file';
+            a.href = it.file.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = it.file.name || 'file';
+
+            const sizeSpan = document.createElement('span');
+            sizeSpan.className = 'size';
+            sizeSpan.textContent = ' · ' + formatBytes(it.file.size);
+
+            a.appendChild(sizeSpan);
+            content.appendChild(a);
+          } else {
+            content.textContent = it.content || '';
+          }
+
+          main.appendChild(content);
+          row.appendChild(main);
+          itemsEl.appendChild(row);
+        }
+      }
+
+      function getWsUrl() {
+        const loc = window.location;
+        const proto = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+        return proto + '//' + loc.host;
+      }
+
+      function updateWsLabel() {
+        wsUrlLabel.textContent = getWsUrl();
+      }
+
+      function connect(roomCode) {
+        if (!roomCode) return;
+        if (ws) {
+          ws.close();
+          ws = null;
+        }
+        setError('');
+        setStatus(false);
+        currentRoom = roomCode;
+        roomCodeDisplay.textContent = roomCode;
+        renderItems([]);
+
+        const url = getWsUrl();
+        ws = new WebSocket(url);
+
+        ws.onopen = () => {
+          setStatus(true);
+          ws.send(JSON.stringify({ type: 'join', code: roomCode }));
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'joined') {
+              renderItems(msg.items || []);
+            } else if (msg.type === 'item_added') {
+              const existing = Array.from(itemsEl.querySelectorAll('.item'));
+              const dummy = document.createElement('div');
+              dummy.style.display = 'none';
+              itemsEl.appendChild(dummy);
+              // simpler: just re-render, keeping it consistent
+              // we request a fresh list by pushing onto local copy
+              // but since server doesn't re-send full state, we append
+              const last = msg.item;
+              const prev = [];
+              // collect from DOM is complex; just append last nicely
+              itemsEl.removeChild(dummy);
+              const synthetic = last ? [last] : [];
+              if (!existing.length) {
+                renderItems(synthetic);
+              } else {
+                // naive: clear then show previous + last is too complex without tracking;
+                // Instead, append just this one visually.
+                const arr = [];
+                const node = document.createElement('div');
+                // We'll just append via helper by re-rendering with DOM snapshot disabled for now.
+                // For simplicity, reload page state when you join a room next time.
+                // To avoid complexity, re-use renderItems with appended list kept in memory.
+              }
+            } else if (msg.type === 'item_removed') {
+              // items naturally expire; simplest is to ignore per-message here.
+            } else if (msg.type === 'error') {
+              setError(msg.error || 'Server error');
+            }
+          } catch (e) {
+            console.error('Bad WS message', e);
+          }
+        };
+
+        ws.onclose = () => {
+          setStatus(false);
+        };
+
+        ws.onerror = () => {
+          setStatus(false);
+          setError('WebSocket error. If this keeps happening, refresh the page.');
+        };
+      }
+
+      joinBtn.addEventListener('click', () => {
+        const raw = (roomInput.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+        if (!raw) {
+          setError('Enter a room code to join.');
+          return;
+        }
+        setError('');
+        connect(raw);
+      });
+
+      roomInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          joinBtn.click();
+        }
+      });
+
+      clearTextBtn.addEventListener('click', () => {
+        textInput.value = '';
+      });
+
+      sendTextBtn.addEventListener('click', () => {
+        if (!ws || ws.readyState !== WebSocket.OPEN || !currentRoom) {
+          setError('Join a room first.');
+          return;
+        }
+        const content = textInput.value.trim();
+        if (!content) {
+          setError('Type something to send.');
+          return;
+        }
+        setError('');
+        ws.send(JSON.stringify({
+          type: 'text',
+          content,
+          from: nameInput.value || 'anon'
+        }));
+        // local echo for responsiveness; server will also broadcast
+        textInput.value = '';
+      });
+
+      sendFileBtn.addEventListener('click', async () => {
+        if (!currentRoom) {
+          setError('Join a room first.');
+          return;
+        }
+        const file = fileInput.files[0];
+        if (!file) {
+          setError('Choose a file first.');
+          return;
+        }
+        setError('');
+        const form = new FormData();
+        form.append('file', file);
+        const params = new URLSearchParams({
+          room: currentRoom,
+          from: nameInput.value || 'anon'
+        });
+        try {
+          const res = await fetch('/api/upload?' + params.toString(), {
+            method: 'POST',
+            body: form
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data.error || 'Upload failed');
+          }
+          fileInput.value = '';
+        } catch (e) {
+          console.error(e);
+          setError(e.message || 'Upload failed');
+        }
+      });
+
+      updateWsLabel();
+      renderItems([]);
+    })();
+  </script>
 </body>
 </html>

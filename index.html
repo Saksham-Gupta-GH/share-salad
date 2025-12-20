@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -459,7 +459,7 @@
     }
   </style>
   <style>
-    /* Friendly light theme overrides */
+    /* Friendly light theme (default) */
     :root {
       color-scheme: light;
       --bg: #f5f5fb;
@@ -623,6 +623,11 @@
       color: #111827;
     }
 
+    .theme-toggle {
+      font-size: 11px;
+      padding: 6px 10px;
+    }
+
     .hint {
       color: #9ca3af;
     }
@@ -644,7 +649,12 @@
         <div class="title">Fileshare</div>
         <div class="subtitle">Secure, temporary rooms for sharing text and files across your devices.</div>
       </div>
-      <span class="badge">No sign‑up</span>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button id="themeToggle" class="theme-toggle secondary" type="button">
+          <span id="themeLabel">Light</span> / Dark
+        </button>
+        <span class="badge">No sign‑up</span>
+      </div>
     </div>
 
     <div class="layout">
@@ -750,6 +760,8 @@
       const sendFileBtn = document.getElementById('sendFileBtn');
       const itemsEl = document.getElementById('items');
       const errorEl = document.getElementById('error');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeLabel = document.getElementById('themeLabel');
 
       let ws = null;
       let currentRoom = null;
@@ -1001,6 +1013,30 @@
           setError(e.message || 'Upload failed');
         }
       });
+
+      function applyTheme(theme) {
+        const root = document.documentElement;
+        root.setAttribute('data-theme', theme);
+        if (themeLabel) {
+          themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+        }
+      }
+
+      const storedTheme = localStorage.getItem('fs-theme');
+      if (storedTheme === 'dark' || storedTheme === 'light') {
+        applyTheme(storedTheme);
+      } else {
+        applyTheme('light');
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'light';
+          const next = current === 'light' ? 'dark' : 'light';
+          applyTheme(next);
+          localStorage.setItem('fs-theme', next);
+        });
+      }
 
       updateWsLabel();
       renderItems([]);

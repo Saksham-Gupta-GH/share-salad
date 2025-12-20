@@ -561,16 +561,11 @@
       color: #fecaca;
     }
 
-    /* In dark mode, use yellow instead of green for accents */
-    html[data-theme="dark"] .traffic-dots .dot.green,
-    html[data-theme="dark"] .status-dot.connected,
+    /* In dark mode, use yellow only for content accents (text items),
+       keep header and connection indicators green. */
     html[data-theme="dark"] .item-dot.text {
       background: #facc15;
       box-shadow: none;
-    }
-
-    html[data-theme="dark"] .status-dot.connected {
-      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.25);
     }
 
     html[data-theme="dark"] button:not(.secondary) {

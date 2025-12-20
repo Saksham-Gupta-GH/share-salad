@@ -1,5 +1,8 @@
 # Fileshare
 
+**Live Demo (Deployed App):**  
+https://share-salad.onrender.com/
+
 Secure, temporary rooms for sharing text snippets and small files across your devices.
 
 This project is a lightweight real-time "drop zone" you can open on your phone and laptop to quickly move content between them without logging in or installing anything.

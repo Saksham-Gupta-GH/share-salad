@@ -552,13 +552,37 @@
     }
 
     html[data-theme="dark"] .badge {
-      background: rgba(6, 78, 59, 0.55);
-      border-color: rgba(52, 211, 153, 0.85);
-      color: #a7f3d0;
+      background: #fef9c3;
+      border-color: #facc15;
+      color: #854d0e;
     }
 
     html[data-theme="dark"] .error {
       color: #fecaca;
+    }
+
+    /* In dark mode, use yellow instead of green for accents */
+    html[data-theme="dark"] .traffic-dots .dot.green,
+    html[data-theme="dark"] .status-dot.connected,
+    html[data-theme="dark"] .item-dot.text {
+      background: #facc15;
+      box-shadow: none;
+    }
+
+    html[data-theme="dark"] .status-dot.connected {
+      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.25);
+    }
+
+    html[data-theme="dark"] button:not(.secondary) {
+      background: linear-gradient(135deg, #facc15, #fde047);
+      color: #78350f;
+      box-shadow: 0 10px 24px rgba(250, 204, 21, 0.35);
+    }
+
+    html[data-theme="dark"] input[type="text"]:focus,
+    html[data-theme="dark"] textarea:focus {
+      border-color: #facc15;
+      box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.5);
     }
   </style>
   <style>

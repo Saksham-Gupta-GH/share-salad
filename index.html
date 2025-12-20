@@ -6,80 +6,106 @@
   <title>Share Salad</title>
   <style>
     :root {
-      color-scheme: dark light;
-      --bg: #050816;
-      --card: #111827;
+      color-scheme: dark;
+      --bg: #020617;
+      --card: #020617;
+      --card-elevated: #020617;
       --accent: #22c55e;
-      --accent-soft: rgba(34, 197, 94, 0.15);
-      --border: #1f2937;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --border: rgba(148, 163, 184, 0.3);
+      --border-subtle: rgba(51, 65, 85, 0.9);
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
-      --danger: #f97373;
+      --danger: #fecaca;
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-      background: radial-gradient(circle at top, #0b1220 0, #020617 40%, #000 80%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(37, 99, 235, 0.4), transparent 55%),
+        radial-gradient(circle at bottom, rgba(16, 185, 129, 0.28), transparent 55%),
+        linear-gradient(135deg, #020617, #020617 40%, #020617 100%);
       color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
     }
+
     .shell {
       width: 100%;
-      max-width: 960px;
-      border-radius: 18px;
-      padding: 20px 20px 16px;
+      max-width: 1040px;
+      border-radius: 20px;
+      padding: 18px 18px 16px;
       background:
-        radial-gradient(circle at 0 0, rgba(94, 234, 212, 0.18) 0, transparent 40%),
-        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.18) 0, transparent 40%),
-        linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(148, 163, 184, 0.25);
+        radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.16), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(34, 197, 94, 0.12), transparent 55%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
+      border: 1px solid var(--border);
       box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.75),
+        0 22px 55px rgba(0, 0, 0, 0.85),
         0 0 0 1px rgba(15, 23, 42, 0.8);
     }
+
     .shell-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
+      gap: 8px;
     }
+
     .traffic-dots {
       display: flex;
       gap: 6px;
     }
+
     .dot {
       width: 10px;
       height: 10px;
       border-radius: 999px;
       background: #4b5563;
     }
+
     .dot.red { background: #f97373; }
     .dot.amber { background: #facc15; }
     .dot.green { background: #22c55e; }
 
+    .title-block {
+      flex: 1;
+      min-width: 0;
+    }
+
     .title {
-      font-size: 15px;
-      font-weight: 500;
-      color: #e5e7eb;
+      font-size: 16px;
+      font-weight: 600;
+      color: #f9fafb;
       letter-spacing: 0.02em;
     }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
     .badge {
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(52, 211, 153, 0.5);
-      background: rgba(6, 78, 59, 0.35);
+      border: 1px solid rgba(52, 211, 153, 0.85);
+      background: rgba(6, 78, 59, 0.55);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: #a7f3d0;
+      color: #bbf7d0;
+      white-space: nowrap;
     }
 
     .layout {
@@ -87,29 +113,32 @@
       grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
       gap: 16px;
     }
-    @media (max-width: 768px) {
+
+    @media (max-width: 840px) {
       .layout {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
     .panel {
-      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.35), transparent 55%);
-      border-radius: 14px;
-      border: 1px solid rgba(75, 85, 99, 0.7);
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.2), transparent 60%);
+      border-radius: 16px;
+      border: 1px solid rgba(51, 65, 85, 0.85);
       padding: 14px 14px 12px;
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(18px);
       position: relative;
       overflow: hidden;
     }
+
     .panel::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 0 0, rgba(94, 234, 212, 0.08), transparent 55%);
-      opacity: 0.8;
+      background: radial-gradient(circle at 0 0, rgba(94, 234, 212, 0.06), transparent 55%);
+      opacity: 0.9;
       pointer-events: none;
     }
+
     .panel-inner {
       position: relative;
       z-index: 1;
@@ -122,16 +151,19 @@
       gap: 8px;
       margin-bottom: 10px;
     }
+
     .panel-title {
       font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #9ca3af;
     }
+
     .panel-subtitle {
       font-size: 12px;
       color: #6b7280;
+      margin-top: 2px;
     }
 
     label {
@@ -145,42 +177,56 @@
 
     input[type="text"] {
       width: 100%;
-      padding: 7px 8px;
+      padding: 8px 9px;
       border-radius: 9px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.96);
       color: var(--text-main);
       font-size: 13px;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, transform 0.06s ease;
     }
+
     input[type="text"]::placeholder {
       color: #4b5563;
     }
+
     input[type="text"]:focus {
-      border-color: rgba(52, 211, 153, 0.8);
-      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.5);
-      background: rgba(15, 23, 42, 0.98);
+      border-color: rgba(59, 130, 246, 0.9);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6);
+      background: #020617;
+      transform: translateY(-0.5px);
     }
 
     textarea {
       width: 100%;
       min-height: 120px;
       border-radius: 9px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.96);
       color: var(--text-main);
       font-size: 13px;
       padding: 8px 9px;
       resize: vertical;
       outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
+
     textarea::placeholder {
       color: #4b5563;
     }
+
     textarea:focus {
       border-color: rgba(96, 165, 250, 0.9);
-      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6);
+      background: #020617;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .input-row {
@@ -189,6 +235,7 @@
       align-items: flex-end;
       margin-bottom: 10px;
     }
+
     .input-row-single {
       margin-bottom: 10px;
     }
@@ -196,7 +243,7 @@
     button {
       border-radius: 999px;
       border: none;
-      padding: 7px 14px;
+      padding: 8px 16px;
       font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.04em;
@@ -204,30 +251,36 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       background: linear-gradient(135deg, #22c55e, #4ade80);
       color: #022c22;
-      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 10px 22px rgba(16, 185, 129, 0.45);
       transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, opacity 0.12s ease;
       white-space: nowrap;
     }
+
     button:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 14px 30px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 16px 34px rgba(16, 185, 129, 0.65);
     }
+
     button:active:not(:disabled) {
       transform: translateY(0);
-      box-shadow: 0 6px 14px rgba(16, 185, 129, 0.5);
+      box-shadow: 0 7px 18px rgba(16, 185, 129, 0.5);
     }
+
     button.secondary {
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(15, 23, 42, 0.96);
       color: #e5e7eb;
       border: 1px solid rgba(75, 85, 99, 0.9);
       box-shadow: none;
     }
+
     button.secondary:hover:not(:disabled) {
       background: rgba(17, 24, 39, 1);
     }
+
     button:disabled {
       opacity: 0.5;
       cursor: default;
@@ -240,11 +293,12 @@
       gap: 6px;
       border-radius: 999px;
       padding: 5px 9px;
-      background: rgba(17, 24, 39, 0.8);
+      background: rgba(17, 24, 39, 0.9);
       border: 1px solid rgba(55, 65, 81, 0.9);
       font-size: 11px;
       color: #9ca3af;
     }
+
     .pill code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
       font-size: 11px;
@@ -260,6 +314,7 @@
       font-size: 11px;
       color: var(--text-muted);
     }
+
     .status-dot {
       width: 8px;
       height: 8px;
@@ -267,36 +322,47 @@
       margin-right: 6px;
       display: inline-block;
     }
+
     .status-dot.disconnected {
       background: #4b5563;
     }
+
     .status-dot.connected {
       background: #22c55e;
       box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
     }
 
+    .room-code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
     .room-code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: 0.36em;
       text-transform: uppercase;
       color: #e5e7eb;
-      padding: 6px 8px;
-      border-radius: 10px;
-      background: radial-gradient(circle at top, rgba(55, 65, 81, 0.6), rgba(15, 23, 42, 0.95));
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, rgba(55, 65, 81, 0.7), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(75, 85, 99, 0.9);
       text-align: center;
     }
 
     .items-list {
-      max-height: 220px;
+      max-height: 240px;
       overflow-y: auto;
-      border-radius: 9px;
+      border-radius: 10px;
       border: 1px solid rgba(55, 65, 81, 0.9);
       background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.98));
       padding: 6px 6px 4px;
       font-size: 12px;
     }
+
     .items-empty {
       padding: 10px 8px;
       color: #6b7280;
@@ -304,26 +370,31 @@
       align-items: center;
       gap: 6px;
     }
+
     .item {
       padding: 7px 8px 6px;
       border-radius: 8px;
       border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(15, 23, 42, 0.96);
       margin-bottom: 4px;
       display: flex;
       gap: 8px;
     }
+
     .item-dot {
       width: 6px;
       height: 6px;
       border-radius: 999px;
       margin-top: 5px;
     }
+
     .item-dot.text { background: #22c55e; }
     .item-dot.file { background: #3b82f6; }
+
     .item-main {
       flex: 1;
     }
+
     .item-meta {
       display: flex;
       justify-content: space-between;
@@ -331,22 +402,26 @@
       gap: 6px;
       margin-bottom: 2px;
     }
+
     .item-from {
       font-size: 11px;
       color: #9ca3af;
     }
+
     .item-badge {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: #6b7280;
     }
+
     .item-content {
       font-size: 12px;
       color: #e5e7eb;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
+
     .item-file {
       display: inline-flex;
       align-items: center;
@@ -354,11 +429,12 @@
       padding: 3px 7px;
       border-radius: 999px;
       border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(17, 24, 39, 0.95);
+      background: rgba(17, 24, 39, 0.97);
       color: #e5e7eb;
       text-decoration: none;
       font-size: 11px;
     }
+
     .item-file span.size {
       color: #9ca3af;
       font-size: 10px;
@@ -369,6 +445,7 @@
       color: #6b7280;
       margin-top: 6px;
     }
+
     .hint code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
       font-size: 11px;
@@ -378,7 +455,7 @@
     .error {
       margin-top: 6px;
       font-size: 11px;
-      color: #fecaca;
+      color: var(--danger);
     }
   </style>
 </head>
@@ -390,8 +467,11 @@
         <span class="dot amber"></span>
         <span class="dot green"></span>
       </div>
-      <div class="title">Share Salad</div>
-      <span class="badge">Live Room</span>
+      <div class="title-block">
+        <div class="title">Share Salad</div>
+        <div class="subtitle">Create a temporary room to toss text & files between your devices.</div>
+      </div>
+      <span class="badge">Ephemeral</span>
     </div>
 
     <div class="layout">
@@ -399,16 +479,21 @@
         <div class="panel-inner">
           <div class="panel-header">
             <div>
-              <div class="panel-title">Room Controls</div>
-              <div class="panel-subtitle">Join a room and share text or small files in real‑time.</div>
+              <div class="panel-title">Get Started</div>
+              <div class="panel-subtitle">Choose whether to create a new room or join an existing one.</div>
             </div>
+          </div>
+
+          <div class="cta-row">
+            <button id="createRoomBtn">Create New Room</button>
+            <button id="focusJoinBtn" class="secondary">Join Existing Room</button>
           </div>
 
           <div class="input-row-single">
             <label for="roomInput">Room Code</label>
             <div class="input-row">
-              <input id="roomInput" type="text" autocomplete="off" placeholder="E.g. 4‑character code like AB12" />
-              <button id="joinBtn">Join</button>
+              <input id="roomInput" type="text" autocomplete="off" placeholder="For example: 4–8 characters like AB12" />
+              <button id="joinBtn" class="secondary">Join</button>
             </div>
           </div>
 
@@ -428,7 +513,7 @@
           </div>
 
           <div class="hint">
-            Tip: open this URL on two devices, join with the same room code, and share text or files.
+            Open this page on another device and use the same room code to see everything sync in real time.
           </div>
 
           <div class="error" id="error"></div>
@@ -440,13 +525,14 @@
           <div class="panel-header">
             <div>
               <div class="panel-title">Share</div>
-              <div class="panel-subtitle">Post text snippets or upload files (10MB max, common types only).</div>
+              <div class="panel-subtitle">Send short messages or small files (10MB max, common types only).</div>
             </div>
           </div>
 
+          <div class="room-code-label">Current Room</div>
           <div class="room-code" id="roomCodeDisplay">NO ROOM</div>
 
-          <div style="margin-top: 10px;">
+          <div style="margin-top: 12px;">
             <label for="textInput">Text</label>
             <textarea id="textInput" placeholder="Type a message to share with the room..."></textarea>
             <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
@@ -459,7 +545,7 @@
             <label for="fileInput">File Upload</label>
             <div class="input-row">
               <input type="file" id="fileInput" style="flex:1; color: #9ca3af; font-size: 11px;" />
-              <button id="sendFileBtn">Send File</button>
+              <button id="sendFileBtn" class="secondary">Send File</button>
             </div>
             <div class="hint">Files expire after ~5 minutes. Allowed types include images, PDF, text, and zip.</div>
           </div>
@@ -478,6 +564,8 @@
       const roomInput = document.getElementById('roomInput');
       const nameInput = document.getElementById('nameInput');
       const joinBtn = document.getElementById('joinBtn');
+      const createRoomBtn = document.getElementById('createRoomBtn');
+      const focusJoinBtn = document.getElementById('focusJoinBtn');
       const connDot = document.getElementById('connDot');
       const connLabel = document.getElementById('connLabel');
       const wsUrlLabel = document.getElementById('wsUrlLabel');
@@ -492,6 +580,7 @@
 
       let ws = null;
       let currentRoom = null;
+      let itemsState = [];
 
       function formatBytes(bytes) {
         if (!bytes && bytes !== 0) return '';
@@ -593,6 +682,15 @@
         wsUrlLabel.textContent = getWsUrl();
       }
 
+      function generateRoomCode(length) {
+        const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+        let out = '';
+        for (let i = 0; i < length; i++) {
+          out += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return out;
+      }
+
       function connect(roomCode) {
         if (!roomCode) return;
         if (ws) {
@@ -603,7 +701,8 @@
         setStatus(false);
         currentRoom = roomCode;
         roomCodeDisplay.textContent = roomCode;
-        renderItems([]);
+        itemsState = [];
+        renderItems(itemsState);
 
         const url = getWsUrl();
         ws = new WebSocket(url);
@@ -617,33 +716,14 @@
           try {
             const msg = JSON.parse(event.data);
             if (msg.type === 'joined') {
-              renderItems(msg.items || []);
-            } else if (msg.type === 'item_added') {
-              const existing = Array.from(itemsEl.querySelectorAll('.item'));
-              const dummy = document.createElement('div');
-              dummy.style.display = 'none';
-              itemsEl.appendChild(dummy);
-              // simpler: just re-render, keeping it consistent
-              // we request a fresh list by pushing onto local copy
-              // but since server doesn't re-send full state, we append
-              const last = msg.item;
-              const prev = [];
-              // collect from DOM is complex; just append last nicely
-              itemsEl.removeChild(dummy);
-              const synthetic = last ? [last] : [];
-              if (!existing.length) {
-                renderItems(synthetic);
-              } else {
-                // naive: clear then show previous + last is too complex without tracking;
-                // Instead, append just this one visually.
-                const arr = [];
-                const node = document.createElement('div');
-                // We'll just append via helper by re-rendering with DOM snapshot disabled for now.
-                // For simplicity, reload page state when you join a room next time.
-                // To avoid complexity, re-use renderItems with appended list kept in memory.
-              }
-            } else if (msg.type === 'item_removed') {
-              // items naturally expire; simplest is to ignore per-message here.
+              itemsState = msg.items || [];
+              renderItems(itemsState);
+            } else if (msg.type === 'item_added' && msg.item) {
+              itemsState = itemsState.concat([msg.item]);
+              renderItems(itemsState);
+            } else if (msg.type === 'item_removed' && msg.id) {
+              itemsState = itemsState.filter((it) => it.id !== msg.id);
+              renderItems(itemsState);
             } else if (msg.type === 'error') {
               setError(msg.error || 'Server error');
             }
@@ -662,7 +742,7 @@
         };
       }
 
-      joinBtn.addEventListener('click', () => {
+      function joinWithInput() {
         const raw = (roomInput.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
         if (!raw) {
           setError('Enter a room code to join.');
@@ -670,11 +750,26 @@
         }
         setError('');
         connect(raw);
+      }
+
+      createRoomBtn.addEventListener('click', () => {
+        const code = generateRoomCode(4);
+        roomInput.value = code;
+        joinWithInput();
+      });
+
+      focusJoinBtn.addEventListener('click', () => {
+        roomInput.focus();
+        roomInput.select();
+      });
+
+      joinBtn.addEventListener('click', () => {
+        joinWithInput();
       });
 
       roomInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-          joinBtn.click();
+          joinWithInput();
         }
       });
 
@@ -684,7 +779,7 @@
 
       sendTextBtn.addEventListener('click', () => {
         if (!ws || ws.readyState !== WebSocket.OPEN || !currentRoom) {
-          setError('Join a room first.');
+          setError('Join or create a room first.');
           return;
         }
         const content = textInput.value.trim();
@@ -698,13 +793,12 @@
           content,
           from: nameInput.value || 'anon'
         }));
-        // local echo for responsiveness; server will also broadcast
         textInput.value = '';
       });
 
       sendFileBtn.addEventListener('click', async () => {
         if (!currentRoom) {
-          setError('Join a room first.');
+          setError('Join or create a room first.');
           return;
         }
         const file = fileInput.files[0];

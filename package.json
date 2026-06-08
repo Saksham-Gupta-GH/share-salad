@@ -16,7 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mime-types": "^3.0.2",
+    "mongoose": "^9.6.3",
+    "multer": "^2.1.1"
   },
   "engines": {
     "node": ">=20.0.0 <23.0.0"

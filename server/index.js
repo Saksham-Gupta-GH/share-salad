@@ -17,14 +17,26 @@ app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ storage, limits: { fileSize: 15 * 1024 * 1024 } }); // 15MB limit
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/fileshare')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Serverless MongoDB Connection Cache
+let isConnected = false;
+const connectDB = async () => {
+  if (isConnected) return;
+  try {
+    const db = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/fileshare', {
+      serverSelectionTimeoutMS: 5000
+    });
+    isConnected = db.connections[0].readyState === 1;
+    console.log('MongoDB connected (Serverless mode)');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw err;
+  }
+};
 
 // Create Room
 app.post(['/api/create-room', '/create-room'], async (req, res) => {
   try {
+    await connectDB();
     const roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
     const room = new Room({ roomId });
     await room.save();
@@ -38,6 +50,7 @@ app.post(['/api/create-room', '/create-room'], async (req, res) => {
 // Get Room History / Poll Messages
 app.get(['/api/room/:roomId', '/room/:roomId'], async (req, res) => {
   try {
+    await connectDB();
     const room = await Room.findOne({ roomId: req.params.roomId });
     if (!room) {
       return res.status(404).json({ error: 'Room not found or expired' });
@@ -52,6 +65,7 @@ app.get(['/api/room/:roomId', '/room/:roomId'], async (req, res) => {
 app.post(['/api/messages', '/messages'], async (req, res) => {
   const { roomId, type, content, originalName, mimeType, size, senderId, senderName } = req.body;
   try {
+    await connectDB();
     const room = await Room.findOne({ roomId });
     if (!room) return res.status(404).json({ error: 'Room not found or expired' });
     
@@ -80,6 +94,7 @@ app.post(['/api/upload', '/upload'], upload.single('file'), async (req, res) => 
   }
   
   try {
+    await connectDB();
     const fileDoc = new File({
       data: req.file.buffer,
       contentType: req.file.mimetype,
@@ -104,6 +119,7 @@ app.post(['/api/upload', '/upload'], upload.single('file'), async (req, res) => 
 // Download/View File
 app.get(['/api/file/:fileId', '/file/:fileId'], async (req, res) => {
   try {
+    await connectDB();
     const fileDoc = await File.findById(req.params.fileId);
     if (!fileDoc) return res.status(404).json({ error: 'File not found or expired' });
     

@@ -31,7 +31,7 @@ app.post(['/api/create-room', '/create-room'], async (req, res) => {
     res.json({ roomId });
   } catch (error) {
     console.error('Create room error:', error);
-    res.status(500).json({ error: 'Failed to create room' });
+    res.status(500).json({ error: 'Failed to create room', details: error.message });
   }
 });
 

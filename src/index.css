@@ -1,51 +1,67 @@
 body {
-  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
   margin: 0;
-  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #e0e5ec;
+  color: #4a4a4a;
+}
+
+/* Global Ambient Background */
+.neu-bg {
+  background-color: #e0e5ec;
   min-height: 100vh;
 }
 
-.bg-animated-gradient {
-  background: linear-gradient(-45deg, #D35400, #F39C12, #E67E22, #C0392B);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+/* Neumorphic Flat/Raised Surface */
+.neu-flat {
+  background-color: #e0e5ec !important;
+  box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5) !important;
+  border: none !important;
 }
 
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Neumorphic Convex/Clickable Button */
+.neu-convex {
+  background: linear-gradient(145deg, #f0f5fc, #caced4) !important;
+  box-shadow: 5px 5px 10px #bec3c9, -5px -5px 10px #ffffff !important;
+  border: none !important;
+  color: #4d5d6c !important;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.6) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+.neu-convex:hover {
+  background: linear-gradient(145deg, #e0e5ec, #e0e5ec) !important;
 }
 
-.chat-bubble-me {
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: white;
-  border-radius: 1.25rem;
-  border-bottom-right-radius: 0.25rem;
+/* Neumorphic Pressed/Indented Surface */
+.neu-pressed {
+  background-color: #e0e5ec !important;
+  box-shadow: inset 6px 6px 10px 0 rgba(163,177,198, 0.7), inset -6px -6px 10px 0 rgba(255,255,255, 0.8) !important;
+  border: none !important;
 }
 
-.chat-bubble-other {
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  border: 1px solid rgba(0,0,0,0.05);
-  border-radius: 1.25rem;
-  border-bottom-left-radius: 0.25rem;
+.neu-pressed:focus {
+  outline: none !important;
+  box-shadow: inset 8px 8px 12px 0 rgba(163,177,198, 0.8), inset -8px -8px 12px 0 rgba(255,255,255, 0.9) !important;
 }
 
-/* Subtle file upload styling */
-.file-upload-zone {
-  border: 2px dashed rgba(0, 123, 255, 0.4);
-  background: rgba(0, 123, 255, 0.05);
-  transition: all 0.2s;
+/* Neumorphic Soft Text */
+.neu-text {
+  color: #4d5d6c !important;
 }
-.file-upload-zone:hover {
-  background: rgba(0, 123, 255, 0.1);
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #bec3c9;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a3b1c6;
 }

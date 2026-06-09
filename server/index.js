@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/fileshare
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Create Room
-app.post('/api/create-room', async (req, res) => {
+app.post(['/api/create-room', '/create-room'], async (req, res) => {
   try {
     const roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
     const room = new Room({ roomId });
@@ -36,7 +36,7 @@ app.post('/api/create-room', async (req, res) => {
 });
 
 // Get Room History / Poll Messages
-app.get('/api/room/:roomId', async (req, res) => {
+app.get(['/api/room/:roomId', '/room/:roomId'], async (req, res) => {
   try {
     const room = await Room.findOne({ roomId: req.params.roomId });
     if (!room) {
@@ -49,7 +49,7 @@ app.get('/api/room/:roomId', async (req, res) => {
 });
 
 // Send Message
-app.post('/api/messages', async (req, res) => {
+app.post(['/api/messages', '/messages'], async (req, res) => {
   const { roomId, type, content, originalName, mimeType, size, senderId, senderName } = req.body;
   try {
     const room = await Room.findOne({ roomId });
@@ -74,7 +74,7 @@ app.post('/api/messages', async (req, res) => {
 });
 
 // Upload File
-app.post('/api/upload', upload.single('file'), async (req, res) => {
+app.post(['/api/upload', '/upload'], upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
@@ -102,7 +102,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 });
 
 // Download/View File
-app.get('/api/file/:fileId', async (req, res) => {
+app.get(['/api/file/:fileId', '/file/:fileId'], async (req, res) => {
   try {
     const fileDoc = await File.findById(req.params.fileId);
     if (!fileDoc) return res.status(404).json({ error: 'File not found or expired' });

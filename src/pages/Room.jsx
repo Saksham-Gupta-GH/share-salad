@@ -323,7 +323,7 @@ const Room = () => {
       <div className="flex-grow-1 overflow-auto p-3" style={{ scrollBehavior: 'smooth' }}>
         <Container>
             {messages.length === 0 && (
-              <div className="text-center mt-5 text-white-50">
+              <div className="text-center mt-5 text-secondary">
                 <FaLock size={48} className="mb-3 opacity-50" />
                 <p className="lead fw-bold">This room is End-to-End Encrypted.</p>
                 <p className="small">Messages and files are encrypted before leaving your device.</p>
@@ -334,7 +334,7 @@ const Room = () => {
             return (
                 <div key={index} className={`d-flex flex-column mb-3 ${isMe ? 'align-items-end' : 'align-items-start'}`}>
                   <div className={`d-flex align-items-center gap-2 mb-1 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <small className="text-white-50 fw-bold" style={{ fontSize: '0.75rem', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                    <small className="text-secondary fw-bold" style={{ fontSize: '0.75rem' }}>
                         {msg.senderName || 'Anonymous'}
                     </small>
                   </div>
@@ -365,7 +365,7 @@ const Room = () => {
                     </div>
                     )}
                 </div>
-                <small className="text-white-50 mt-1" style={{ fontSize: '0.7rem' }}>
+                <small className="text-secondary mt-1" style={{ fontSize: '0.7rem' }}>
                     {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </small>
                 </div>

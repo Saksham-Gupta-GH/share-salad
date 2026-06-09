@@ -34,7 +34,7 @@ const Home = () => {
   return (
     <div className="bg-animated-gradient min-vh-100 d-flex flex-column align-items-center justify-content-center">
       <Container>
-        <div className="text-center mb-5 text-white">
+        <div className="text-center mb-5 text-dark" style={{ color: '#2b3a4a' }}>
           <FaUserSecret className="display-1 mb-3 shadow-sm rounded-circle p-2 bg-white text-primary" style={{ fontSize: '100px' }} />
           <h1 className="fw-bolder mb-3" style={{ fontSize: '3.5rem', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>Share Salad</h1>
           <p className="lead fw-medium" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.2)' }}>
@@ -98,7 +98,7 @@ const Home = () => {
           </Col>
         </Row>
       </Container>
-      <div className="fixed-bottom text-center pb-4 text-white-50 small fw-medium">
+      <div className="fixed-bottom text-center pb-4 text-secondary small fw-medium">
         Zero-Knowledge Security • 30-Minute Self-Destruct
       </div>
     </div>

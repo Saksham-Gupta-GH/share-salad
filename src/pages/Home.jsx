@@ -36,7 +36,7 @@ const Home = () => {
       <Container>
         <div className="text-center mb-5 neu-text">
           <FaUserSecret className="display-1 mb-4 neu-flat rounded-circle p-4" style={{ fontSize: '100px', color: '#6c7a89' }} />
-          <h1 className="fw-bolder mb-3 neu-text" style={{ fontSize: '3.5rem', letterSpacing: '-1px' }}>Share Salad</h1>
+          <h1 className="fw-bolder mb-3 neu-text" style={{ fontSize: '3.5rem', letterSpacing: '-1px' }}>Quick Drop</h1>
           <p className="lead fw-medium mb-5 neu-text" style={{ opacity: 0.8 }}>
             The most secure, ephemeral way to share files and text.
           </p>
